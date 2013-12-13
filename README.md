@@ -1,0 +1,1 @@
+## Custom Widget for [Wakanda](http://wakanda.org)The __waDropzone__ widget is simple implementation of DropzoneJS library, for more details please see http://www.dropzonejs.com/. 
