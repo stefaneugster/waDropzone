@@ -31,37 +31,117 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h2>
+<a name="custom-widget-for-wakanda" class="anchor" href="#custom-widget-for-wakanda"><span class="octicon octicon-link"></span></a>Custom Widget for <a href="http://wakanda.org">Wakanda</a>
+</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>The <strong>waDropzone</strong> widget is simple implementation of DropzoneJS library, for more details please see <a href="https://www.dropzonejs.com/">https://www.dropzonejs.com/</a>. </p>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="video-demo" class="anchor" href="#video-demo"><span class="octicon octicon-link"></span></a>Video Demo</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p><a href="http://www.youtube.com/watch?v=ErjplSPF0MA">http://www.youtube.com/watch?v=ErjplSPF0MA</a></p>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="properties" class="anchor" href="#properties"><span class="octicon octicon-link"></span></a>Properties</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>This <strong>waDropzone</strong> widget has the following properties: </p>
+
+<ul>
+<li>
+<strong>Parall Uploads</strong>: How many file uploads to process in parallel. (See the Enqueuing file uploads section for more info: <a href="https://www.dropzonejs.com/">https://www.dropzonejs.com/</a>)</li>
+<li>
+<strong>Max File Size</strong>: The max file size allowed (in MB).</li>
+<li>
+<strong>Upload Multiple</strong>: Whether the widget should send multiple files in one request.</li>
+<li>
+<strong>Create Image Thumbnails</strong>: Display thumbnails for images.</li>
+<li>
+<strong>Add Remove Links</strong>: This will add a link to every file preview to remove or cancel (if already uploading).</li>
+<li>
+<strong>Max Files</strong>: How many files the widget can handle.</li>
+<li>
+<strong>Auto Process</strong>: if checked, it will process files automatically, if not, you should call the .processQueue() method to upload files.</li>
+<li>
+<strong>In Case of conflict</strong>: Select an action in case if file already exists.</li>
+<li>
+<strong>Upload folder</strong>: Path to the folder where to save the files.</li>
+</ul><h3>
+<a name="events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events:</h3>
+
+<p>This <strong>waDropzone</strong> widget has 11 Events:</p>
+
+<ul>
+<li><p><strong>On File Added</strong>: called whenever a file is added to the widget.</p></li>
+<li><p><strong>On File Removed</strong>: Called whenever a file is removed from the list. You can listen to this and delete the file from your server if you want to.</p></li>
+<li><p><strong>On Error</strong>: An error occured. Receives the errorMessage as second parameter and if the error was due to the XMLHttpRequest the xhr object as third.</p></li>
+<li><p><strong>On Processing</strong>: When a file gets processed (since there is a queue not all files are processed immediately).</p></li>
+<li>
+<strong>On Upload Progress</strong>: Gets called periodically whenever the file upload progress changes.
+Gets the progress parameter as second parameter which is a percentage (0-100) and the bytesSent parameter as third which is the number of the bytes that have been sent to the server.</li>
+<li>
+<strong>On Sending</strong>: Called just before each file is sent. Gets the xhr object and the formData objects as second and third parameters, so you can modify them (for example to add a CSRF token) or add additional data.</li>
+<li>
+<strong>On Processing</strong>: When a file gets processed (since there is a queue not all files are processed immediately).</li>
+<li>
+<strong>On Success</strong>: The file has been uploaded successfully. Gets the server response as second argument.</li>
+<li>
+<strong>On Complete</strong>: Called when the upload was either successful or erroneous.</li>
+<li>
+<strong>On Cancel</strong>: Called when a file upload gets canceled.</li>
+<li>
+<strong>On Max Files Reached</strong>: Called when the number of files accepted reached the maxFiles limit.</li>
+<li>
+<strong>On Max Files Exceeded</strong>: Called for each file that has been rejected because the number of files exceeds the maxFiles limit.</li>
+</ul><h3>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h3>
+
+<ul>
+<li>
+<strong>getAcceptedFiles</strong>: List of files accepted.</li>
+<li>
+<strong>getRejectedFiles</strong>: List of files rejected by the widget (due to size, file type etc).</li>
+<li>
+<strong>getRejectedFiles</strong>: List of files rejected by the widget (due to size, file type etc).</li>
+<li>
+<strong>getQueuedFiles</strong>: List of files in the Queue.</li>
+<li>
+<strong>getUploadingFiles</strong>: List the files currently in the upload process.</li>
+<li>
+<strong>disable</strong>: Disable the widget.</li>
+<li>
+<strong>enable</strong>: Enable the widget.</li>
+<li>
+<strong>addFile(file)</strong>: Add file to the widget, it accept one parameter File Object <strong>file</strong> (<a href="http://www.w3.org/TR/FileAPI/#dfn-file">http://www.w3.org/TR/FileAPI/#dfn-file</a>).</li>
+<li>
+<strong>enqueueFiles(files)</strong>: enqueue multiple files to the Queue, it accept an array of file objects. </li>
+<li>
+<strong>enqueueFile(file)</strong>: enqueue single file to the Queue, it accept an file object as parameter. </li>
+<li>
+<strong>removeFile(file)</strong>: remove file from the widget. </li>
+<li>
+<strong>removeAllFiles(cancelIfNecessary)</strong>: remove all files from the widget, pass a boolean to cancel the uploading files as well. </li>
+<li>
+<strong>removeAllFiles(cancelIfNecessary)</strong>: remove all files from the widget, pass a boolean to cancel the uploading files as well. </li>
+<li>
+<strong>processQueue()</strong>: start processing files in the Queue. </li>
+<li>
+<strong>processFiles(files)</strong>: process the specified files. </li>
+<li>
+<strong>cancelUpload(file)</strong>: cancel the upload for the specified file.</li>
+<li>
+<strong>uploadFiles(files)</strong>: Start uploading the specified files.</li>
+</ul><h3>
+<a name="goals" class="anchor" href="#goals"><span class="octicon octicon-link"></span></a>Goals</h3>
+
+<p>The <strong>waDropzone</strong> is an alternative to upload multiple files to Wakanda Server, it's easy to use just Drag &amp; Drop the widget to your page and you're up &amp; running.</p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="more-information" class="anchor" href="#more-information"><span class="octicon octicon-link"></span></a>More Information</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>For more information on how to install a custom widget, refer to <a href="http://doc.wakanda.org/WakandaStudio0/help/Title/en/page3869.html#1027761">Installing a Custom Widget</a>.</p>
+
+<p>For more information about Custom Widgets, refer to <a href="http://doc.wakanda.org/Wakanda0.v5/help/Title/en/page3863.html" title="Custom Widgets">Custom Widgets</a> in the <a href="http://doc.wakanda.org/Wakanda0.v5/help/Title/en/page3844.html" title="Architecture of Wakanda Applications">Architecture of Wakanda Applications</a> manual.</p>
       </section>
     </div>
 
@@ -73,7 +153,17 @@ $ git checkout gh-pages
       </footer>
     </div>
 
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37960720-4");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
