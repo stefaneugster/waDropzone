@@ -4,6 +4,24 @@ WAF.define('waDropzone', function() {
     var waDropzone = widget.create('waDropzone');
 
     var dz;
+    
+    waDropzone.addProperty('parallelUploads',{ type : "string", bindable : false});
+	waDropzone.addProperty('maxFilesize',{ type : "string", bindable : false});
+	waDropzone.addProperty('maxFiles',{ type : "string", bindable : false});
+	waDropzone.addProperty('uploadFolder',{ defaultValue : '/tmp', type : "string", bindable : false});
+	
+	waDropzone.addProperty('uploadMultiple',{ type : "boolean", bindable : false});
+	waDropzone.addProperty('createImageThumbnails',{ type : "boolean", bindable : false});
+	waDropzone.addProperty('addRemoveLinks',{ type : "boolean", bindable : false});
+	waDropzone.addProperty('autoProcess',{ type : "boolean", bindable : false});	
+
+	waDropzone.addProperty('ifFileExist',{ type : "enum",  values: {
+                over: 'Overwrite',
+                alert: 'Alert User',
+                rename: 'Rename'
+            },
+            defaultValue: 'pie'});	
+    
 
 	waDropzone.prototype.countElement = function(element)
 	{
@@ -25,17 +43,17 @@ WAF.define('waDropzone', function() {
             dz = new Dropzone("#" + this.id, {
                 url: "/waUpload/upload",
                 paramName: "filesToUpload",
-                parallelUploads: this.options.paralleluploads == null ? 1 : this.options.paralleluploads,
-                maxFilesize: this.options.maxfilesize == null ? 1 : this.options.maxfilesize,
-                uploadMultiple: this.options.uploadmultiple == "true" ? true : false,
-                addRemoveLinks: this.options.addremovelinks == "true" ? true : false,
-                createImageThumbnails: this.options.createimagethumbnails == "true" ? true : false,
-                maxFiles: this.options.maxfiles == null ? 2 : this.options.maxfiles,
+                parallelUploads: this.paralleluploads() == null ? 1 : this.paralleluploads(),
+                maxFilesize: this.maxfilesize() == null ? 1 : this.maxfilesize(),
+                uploadMultiple: this.uploadmultiple() == "true" ? true : false,
+                addRemoveLinks: this.addremovelinks() == "true" ? true : false,
+                createImageThumbnails: this.createimagethumbnails() == "true" ? true : false,
+                maxFiles: this.maxfiles() == null ? 2 : this.maxfiles(),
                 autoProcessQueue: false
             });
-            var conflict = this.options.iffileexist;
+            var conflict = this.iffileexist();
             var r = false;
-            var folder = this.options.uploadfolder == null ? "/tmp" : this.options.uploadfolder
+            var folder = this.uploadfolder() == null ? "/tmp" : this.uploadfolder();
 			
             dz.on('sending', function(file, xhr, formData) {
 
