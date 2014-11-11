@@ -5,7 +5,7 @@ The __waDropzone__ widget is simple implementation of DropzoneJS library, for mo
 http://www.youtube.com/watch?v=ErjplSPF0MA
 
 ### Installation Note
-* Dont forget to set upload group permissions: http://doc.wakanda.org/WakandaStudio0/help/Title/de/page2107.html
+* Dont forget to set the upload [group permissions](http://doc.wakanda.org/home2.de.html#/Data-Security-and-Access-Control/Assigning-Group-Permissions.200-725897.en.html) in the Permissions.waPerm file and the allowed upload file extensions in the Settings.waSetings file.
 
 ### Properties
 This __waDropzone__ widget has the following properties: 
