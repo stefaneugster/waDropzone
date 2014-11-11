@@ -15,12 +15,13 @@ WAF.define('waDropzone', function() {
 	waDropzone.addProperty('addRemoveLinks',{ type : "boolean", bindable : false});
 	waDropzone.addProperty('autoProcess',{ type : "boolean", bindable : false});	
 
-	waDropzone.addProperty('ifFileExist',{ type : "enum",  values: {
-                over: 'Overwrite',
+	waDropzone.addProperty('ifFileExist',{ type : "enum",  
+			values: {
+                replace: 'Replace',
                 alert: 'Alert User',
                 rename: 'Rename'
-            },
-            defaultValue: 'pie'});	
+            }
+    });	
     
 
 	waDropzone.prototype.countElement = function(element)
@@ -32,10 +33,10 @@ WAF.define('waDropzone', function() {
 			{
 				c++;
 			}
-		})
+		});
 		
 		return c;
-	}
+	};
     waDropzone.prototype.init = function() {
         try {
             var that = this;
@@ -43,17 +44,17 @@ WAF.define('waDropzone', function() {
             dz = new Dropzone("#" + this.id, {
                 url: "/waUpload/upload",
                 paramName: "filesToUpload",
-                parallelUploads: this.paralleluploads() == null ? 1 : this.paralleluploads(),
-                maxFilesize: this.maxfilesize() == null ? 1 : this.maxfilesize(),
-                uploadMultiple: this.uploadmultiple() == "true" ? true : false,
-                addRemoveLinks: this.addremovelinks() == "true" ? true : false,
-                createImageThumbnails: this.createimagethumbnails() == "true" ? true : false,
-                maxFiles: this.maxfiles() == null ? 2 : this.maxfiles(),
-                autoProcessQueue: false
+                parallelUploads: this.parallelUploads() == null ? 1 : this.parallelUploads(),
+                maxFilesize: this.maxFilesize() == null ? 1 : this.maxFilesize(),
+                uploadMultiple: this.uploadMultiple() == true ? true : false,
+                addRemoveLinks: this.addRemoveLinks() == true ? true : false,
+                createImageThumbnails: this.createImageThumbnails() == "true" ? true : false,
+                maxFiles: this.maxFiles() == null ? 2 : this.maxFiles(),
+                autoProcessQueue: this.autoProcess()
             });
-            var conflict = this.iffileexist();
+            var conflict = this.ifFileExist();
             var r = false;
-            var folder = this.uploadfolder() == null ? "/tmp" : this.uploadfolder();
+            var folder = this.uploadFolder() == null ? "/tmp" : this.uploadFolder();
 			
             dz.on('sending', function(file, xhr, formData) {
 
@@ -66,15 +67,13 @@ WAF.define('waDropzone', function() {
                     xhr: xhr,
                     form: formData
                 });
-
             });
 
             dz.on('addedfile', function(file) {
-
-                if (conflict === 'Replace') {
+                if (conflict === 'replace') {
                     r = true;
                 }
-                else if (conflict === 'Alert User') {
+                else if (conflict === 'alert') {
                     //verify the file
                     $.ajax({
                         type: 'POST',
@@ -128,25 +127,23 @@ WAF.define('waDropzone', function() {
                             });
 
                             box.dialog("open");
-							
                         }
                         else{
                         	that.processFiles([file])
                         }
-                    })
+                    });
                 }
-
 
                 that.fire('addedfile', {
                     file: file
                 });
-            })
+            });
 
             dz.on('removedfile', function(file) {
                 that.fire('removedfile', {
                     file: file
                 });
-            })
+            });
 
             dz.on('error', function(file, errorMessage, xhr) {
                 that.fire('error', {
@@ -154,13 +151,13 @@ WAF.define('waDropzone', function() {
                     errorMessage: errorMessage,
                     xhr: xhr
                 });
-            })
+            });
 
             dz.on('processing', function(file) {
                 that.fire('processing', {
                     file: file
                 });
-            })
+            });
 
             dz.on('uploadprogress', function(file, progress, byteSent) {
                 that.fire('uploadprogress', {
@@ -168,38 +165,38 @@ WAF.define('waDropzone', function() {
                     progress: progress,
                     byteSent: byteSent
                 });
-            })
+            });
 
             dz.on('success', function(file, response) {
                 that.fire('success', {
                     file: file,
                     serverResponse: response
                 });
-            })
+            });
 
             dz.on('complete', function(file) {
                 that.fire('complete', {
                     file: file
                 });
-            })
+            });
 
             dz.on('canceled', function(file) {
                 that.fire('canceled', {
                     file: file
                 });
-            })
+            });
 
             dz.on('maxfilesreached', function(file) {
                 that.fire('maxfilesreached', {
                     file: file
                 });
-            })
+            });
 
             dz.on('maxfilesexceeded', function(file) {
                 that.fire('maxfilesexceeded', {
                     file: file
                 });
-            })
+            });
 
             this.files = dz.files;
             
@@ -250,15 +247,15 @@ WAF.define('waDropzone', function() {
 	        this.removeAllFiles		= function(cancelIfNecessary)
 	        {
 	        	return dz.removeAllFiles(cancelIfNecessary);
-	        }
+	        };
 	        this.processQueue		= function()
 	        {
 	        	return dz.processQueue();
-	        }
+	        };
 	        this.processFiles		= function(files)
 	        {
 	        	return dz.processFiles(files);
-	        }
+	        };
 	        this.cancelUpload		= function(file)
 	        {
 	        	return dz.cancelUpload(file);
@@ -266,14 +263,12 @@ WAF.define('waDropzone', function() {
 	        this.uploadFiles		= function(files){
 	        	return dz.uploadFiles(files);
 	        };
-
         }
         catch (e) {
             console.log(e.message);
         }
     };
-        
-    
+
     return waDropzone;
 });
 

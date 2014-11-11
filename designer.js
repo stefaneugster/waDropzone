@@ -15,7 +15,7 @@
 	waDropzone.customizeProperty("addRemoveLinks", {'title': 'addRemoveLinks'});
 	waDropzone.customizeProperty("maxFiles", {'title': 'Max Files'});
 	waDropzone.customizeProperty("autoProcess", {'title': 'Auto Process'});
-	waDropzone.customizeProperty("ifFileExist", {'title': 'In Case of conflict'});
+	waDropzone.customizeProperty("ifFileExist", {'title': 'In Case of conflict', 'sourceDisplay': false});
 	waDropzone.customizeProperty("uploadFolder", {'title': 'Upload Folder'});
 
 //      /*Define the events for your widget*/
