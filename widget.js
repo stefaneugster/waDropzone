@@ -48,7 +48,7 @@ WAF.define('waDropzone', function() {
                 maxFilesize: this.maxFilesize() == null ? 1 : this.maxFilesize(),
                 uploadMultiple: this.uploadMultiple() == true ? true : false,
                 addRemoveLinks: this.addRemoveLinks() == true ? true : false,
-                createImageThumbnails: this.createImageThumbnails() == "true" ? true : false,
+                createImageThumbnails: this.createImageThumbnails() == true ? true : false,
                 maxFiles: this.maxFiles() == null ? 2 : this.maxFiles(),
                 autoProcessQueue: this.autoProcess()
             });
