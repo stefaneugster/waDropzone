@@ -1,11 +1,11 @@
 (function(waDropzone) {
 
-//      /*Display name of the widget*/
+    /*Display name of the widget*/
 	waDropzone.setDescription('Dropzone');
 
-//      /*Default width and height of your widget when added to the Page*/
+    /*Default width and height of your widget when added to the Page*/
 	waDropzone.setWidth('500');
-	waDropzone.setHeight('300');
+	waDropzone.setHeight('500');
 	
 	waDropzone.customizeProperty("parallelUploads", {'title': 'Parallel Uploads'});
 	waDropzone.customizeProperty("maxFilesize", {'title': 'Max File size(MB)'});
@@ -18,7 +18,9 @@
 	waDropzone.customizeProperty("ifFileExist", {'title': 'In Case of conflict', 'sourceDisplay': false});
 	waDropzone.customizeProperty("uploadFolder", {'title': 'Upload Folder'});
 
-//      /*Define the events for your widget*/
+    /*Define the events for your widget*/
+
+    // File events
 	waDropzone.addEvent({
 		'name':'addedfile',
 		'description':'On File Added',
@@ -84,8 +86,38 @@
 		'description':'On Max Files Exceeded',
 		'category': 'File Events'
 	});
-	
 
+    // Drag events
+	waDropzone.addEvent({
+		'name':'drop',
+		'description':'On Drop',
+		'category': 'Drag Events'
+	});
+	
+	waDropzone.addEvent({
+		'name':'dragenter',
+		'description':'On Drag Enter',
+		'category': 'Drag Events'
+	});
+
+	waDropzone.addEvent({
+		'name':'dragover',
+		'description':'On Drag Over',
+		'category': 'Drag Events'
+	});
+	
+	waDropzone.addEvent({
+		'name':'dragleave',
+		'description':'On Drag Leave',
+		'category': 'Drag Events'
+	});
+		
+    // Special events	
+	waDropzone.addEvent({
+		'name':'allfilescomplete',
+		'description':'On All Files Complete',
+		'category': 'Special Events'
+	});
 });
 
 // For more information, refer to http://doc.wakanda.org/Wakanda0.DevBranch/help/Title/en/page3870.html

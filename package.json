@@ -1,5 +1,6 @@
 {
     "name": "waDropzone",
+    "iconPath": "/icons/dropzone.png",
     "author": "Redwan Hilali",
     "version": "1.0.0",
     "copyright": "(c) 2013 Redwan Hilali",

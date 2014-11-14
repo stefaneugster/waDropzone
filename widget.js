@@ -1,8 +1,7 @@
-WAF.define('waDropzone', function() {
-    var widget = WAF.require('waf-core/widget');
+WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 
     var waDropzone = widget.create('waDropzone');
-    
+
     waDropzone.addProperty('parallelUploads',{ type : "string", bindable : false});
 	waDropzone.addProperty('maxFilesize',{ type : "string", bindable : false});
 	waDropzone.addProperty('maxFiles',{ type : "string", bindable : false});
@@ -34,10 +33,11 @@ WAF.define('waDropzone', function() {
 		
 		return c;
 	};
+
     waDropzone.prototype.init = function() {
         try {
             var that = this;
-            
+
             that.addClass('dropzone');
             that.dz = new Dropzone(that.node, {
                 url: "/waUpload/upload",
@@ -176,6 +176,11 @@ WAF.define('waDropzone', function() {
                 that.fire('complete', {
                     file: file
                 });
+			    if (that.getUploadingFiles().length === 0 && that.getQueuedFiles().length === 0) {
+			        that.fire('allfilescomplete', {
+                    	files: that.dz.files
+                	});
+			    }
             });
 
             that.dz.on('canceled', function(file) {
@@ -195,7 +200,24 @@ WAF.define('waDropzone', function() {
                     file: file
                 });
             });
-
+ 
+ 			// drag events
+            that.dz.on('drop', function(event) {
+                that.fire('drop');
+            });
+            
+            that.dz.on('dragenter', function(event) {
+                that.fire('dragenter');
+            });
+            
+            that.dz.on('dragover', function(event) {
+                that.fire('dragover');
+            });
+    
+            that.dz.on('dragleave', function(event) {
+                that.fire('dragleave');
+            });
+            
             this.files = that.dz.files;
             
             this.getAcceptedFiles 	= function()
