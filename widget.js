@@ -40,8 +40,8 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 
             that.addClass('dropzone');
             that.dz = new Dropzone(that.node, {
-                url: "/waUpload/upload",
-                paramName: "filesToUpload",
+                url: '/waUpload/upload',
+                paramName: 'filesToUpload',
                 parallelUploads: this.parallelUploads() == null ? 1 : this.parallelUploads(),
                 maxFilesize: this.maxFilesize() == null ? 1 : this.maxFilesize(),
                 uploadMultiple: this.uploadMultiple() == true ? true : false,
@@ -52,11 +52,11 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
             });
             var conflict = this.ifFileExist();
             var r = false;
-            var folder = this.uploadFolder() == null ? "/tmp" : this.uploadFolder();
+            var folder = this.uploadFolder() == null ? '/tmp' : this.uploadFolder();
 			
             that.dz.on('sending', function(file, xhr, formData) {
 
-                formData.append("config", JSON.stringify({
+                formData.append('config', JSON.stringify({
                     folder: folder,
                     replace: r
                 }));
