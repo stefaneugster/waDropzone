@@ -3,45 +3,45 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
     var waDropzone = widget.create('waDropzone');
 
     waDropzone.addProperty('parallelUploads', {
-        type : "string", 
+        type : 'string', 
         bindable : false,
         defaultValue : '10'
     });
 	waDropzone.addProperty('maxFilesize', {
-	    type : "string",
+	    type : 'string',
 	    bindable : false,
    	    defaultValue : '10'
     });
 	waDropzone.addProperty('maxFiles', {
-	    type : "string",
+	    type : 'string',
 	    bindable : false,
 	    defaultValue : '10'
 	});
 	waDropzone.addProperty('uploadFolder', {
-	    type : "string", 
+	    type : 'string',
 	    bindable : false, 
 	    defaultValue : '/tmp'
 	});
 	waDropzone.addProperty('uploadMultiple', {
-	    type : "boolean", 
+	    type : 'boolean', 
 	    bindable : false,
         defaultValue : true
 	});
 	waDropzone.addProperty('createImageThumbnails', {
-	    type : "boolean", 
+	    type : 'boolean', 
 	    bindable : false
 	});
 	waDropzone.addProperty('addRemoveLinks', {
-	    type : "boolean", 
+	    type : 'boolean', 
 	    bindable : false
 	});
 	waDropzone.addProperty('autoProcess', {
-	    type : "boolean",
+	    type : 'boolean', 
 	    bindable : false,
         defaultValue : true
 	});
 	waDropzone.addProperty('ifFileExist', {
-	    type : "enum",  
+	    type : 'enum',  
 		values: {
             replace: 'Replace',
             alert: 'Alert User',
@@ -119,44 +119,43 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                         var json = JSON.parse(data);
                         if (json.conflicts.length != 0) {
 
-                            var box = $("<div class='waf-dialog-container' id='dz-modal'>" + json.conflictMessage + "</div>");
+                            var box = $('<div class="waf-dialog-container" id="dz-modal">' + json.conflictMessage + '</div>');
                             box.dialog({
                                 autoOpen: false,
-                                title: "Please select an option",
+                                title: 'Please select an option',
                                 buttons: [{
-                                    "text": "Cancel",
+                                    'text': 'Cancel',
                                     click: function(ev) {
                                         $(this).dialog('close');
                                     }
                                 },{
-                                    "text": "Rename",
+                                    'text': 'Rename',
                                     click: function(ev) {
                                         r = false;
-                                        that.processFiles([file]);
+                                        that.processFile(file);
                                         
                                         $(this).dialog('close');
                                     }
                                 },{
-                                    "text": "Replace",
+                                    'text': 'Replace',
                                     click: function(ev) {
                                         r = true;
                                         
-                                        var list = that.getAcceptedFiles();
-                                       	 if(that.countElement(file) > 1)
-                                        {
-                                        	that.removeFile(file)
-                                        }
-                                        that.processFiles([file]);
+//                                        var list = that.getAcceptedFiles();
+//                                       	 if(that.countElement(file) > 1)
+//                                        {
+//                                        	that.removeFile(file)
+//                                        }
+                                        that.processFile(file);
                                         
                                         $(this).dialog('close');
                                     }
                                 }]
                             });
 
-                            box.dialog("open");
-                        }
-                        else{
-                        	that.processFiles([file])
+                            box.dialog('open');
+                        } else {
+                            that.processFile(file);
                         }
                     });
                 }
@@ -281,6 +280,10 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 	        // upload all files currently queued
 	        this.processQueue		= function() {
 	        	return that.dz.processQueue();
+	        };
+	        // call after replace/update dialog
+	        this.processFile		= function(file) {
+	        	return that.dz.processFile(file);
 	        };
 //	        this.processFiles		= function(files) {
 //	        	return that.dz.processFiles(files);
