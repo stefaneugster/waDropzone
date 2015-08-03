@@ -17,6 +17,11 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 	    bindable : false,
 	    defaultValue : '5'
 	});
+	waDropzone.addProperty('defaultMessage', {
+	    type : 'string',
+	    bindable : false, 
+	    defaultValue : 'Drop files here to upload'
+	});
 	waDropzone.addProperty('uploadFolder', {
 	    type : 'string',
 	    bindable : false, 
@@ -77,6 +82,7 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                 addRemoveLinks: this.addRemoveLinks() == true ? true : false,
                 createImageThumbnails: this.createImageThumbnails() == true ? true : false,
                 maxFiles: this.maxFiles() == null ? 5 : this.maxFiles(),
+                dictDefaultMessage: this.defaultMessage() == null ? 'Drop files here to upload' : this.defaultMessage(),
                 autoProcessQueue: this.autoProcess()
             });
             var conflict = this.ifFileExist();
