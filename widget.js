@@ -1,43 +1,72 @@
 WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
-
+    
     var waDropzone = widget.create('waDropzone');
 
-    waDropzone.addProperty('parallelUploads',{ type : "string", bindable : false});
-	waDropzone.addProperty('maxFilesize',{ type : "string", bindable : false});
-	waDropzone.addProperty('maxFiles',{ type : "string", bindable : false});
-	waDropzone.addProperty('uploadFolder',{ defaultValue : '/tmp', type : "string", bindable : false});
-	
-	waDropzone.addProperty('uploadMultiple',{ type : "boolean", bindable : false});
-	waDropzone.addProperty('createImageThumbnails',{ type : "boolean", bindable : false});
-	waDropzone.addProperty('addRemoveLinks',{ type : "boolean", bindable : false});
-	waDropzone.addProperty('autoProcess',{ type : "boolean", bindable : false});	
-
-	waDropzone.addProperty('ifFileExist',{ type : "enum",  
+    waDropzone.addProperty('parallelUploads', {
+        type : "string", 
+        bindable : false,
+        defaultValue : '10'
+    });
+	waDropzone.addProperty('maxFilesize', {
+	    type : "string",
+	    bindable : false,
+   	    defaultValue : '10'
+    });
+	waDropzone.addProperty('maxFiles', {
+	    type : "string",
+	    bindable : false,
+	    defaultValue : '10'
+	});
+	waDropzone.addProperty('uploadFolder', {
+	    type : "string", 
+	    bindable : false, 
+	    defaultValue : '/tmp'
+	});
+	waDropzone.addProperty('uploadMultiple', {
+	    type : "boolean", 
+	    bindable : false,
+        defaultValue : true
+	});
+	waDropzone.addProperty('createImageThumbnails', {
+	    type : "boolean", 
+	    bindable : false
+	});
+	waDropzone.addProperty('addRemoveLinks', {
+	    type : "boolean", 
+	    bindable : false
+	});
+	waDropzone.addProperty('autoProcess', {
+	    type : "boolean",
+	    bindable : false,
+        defaultValue : true
+	});
+	waDropzone.addProperty('ifFileExist', {
+	    type : "enum",  
 		values: {
             replace: 'Replace',
             alert: 'Alert User',
             rename: 'Rename'
         }
     });
-
 	waDropzone.prototype.countElement = function(element)
 	{
 		var c = 0;
-		this.files.forEach(function(e)
-		{
-			if(element.name == e.name)
-			{
+		
+		this.files.forEach(function(e) {
+			if (element.name == e.name) {
 				c++;
 			}
 		});
 		
 		return c;
 	};
-
     waDropzone.prototype.init = function() {
         try {
             var that = this;
 
+            // disable autodiscover
+            Dropzone.autoDiscover = false;
+    
             that.addClass('dropzone');
             that.dz = new Dropzone(that.node, {
                 url: '/waUpload/upload',
@@ -53,9 +82,9 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
             var conflict = this.ifFileExist();
             var r = false;
             var folder = this.uploadFolder() == null ? '/tmp' : this.uploadFolder();
-			
+            // called just before each file is sent. Gets the xhr object and the formData objects as second and third parameters,
+            // so you can modify them (for example to add a CSRF token) or add additional data
             that.dz.on('sending', function(file, xhr, formData) {
-
                 formData.append('config', JSON.stringify({
                     folder: folder,
                     replace: r
@@ -66,7 +95,7 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                     form: formData
                 });
             });
-
+			// when a file is added to the list
             that.dz.on('addedfile', function(file) {
                 if (conflict === 'replace') {
                     r = true;
@@ -78,8 +107,8 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                         url: '/waUpload/verify',
                         data: {
                             filesInfo: JSON.stringify({
-                                "folder": folder,
-                                "files": [{
+                                'folder': folder,
+                                'files': [{
                                     name: file.name,
                                     type: file.type,
                                     size: file.size
@@ -131,18 +160,17 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                         }
                     });
                 }
-
                 that.fire('addedfile', {
                     file: file
                 });
             });
-
+			// called whenever a file is removed from the list. you can listen to this and delete the file from your server if you want to.
             that.dz.on('removedfile', function(file) {
                 that.fire('removedfile', {
                     file: file
                 });
             });
-
+			// an error occured. receives the errorMessage as second parameter and if the error was due to the XMLHttpRequest the xhr object as third.
             that.dz.on('error', function(file, errorMessage, xhr) {
                 that.fire('error', {
                     file: file,
@@ -150,13 +178,13 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                     xhr: xhr
                 });
             });
-
+			// when a file gets processed (since there is a queue not all files are processed immediately). this event was called processingfile previously.
             that.dz.on('processing', function(file) {
                 that.fire('processing', {
                     file: file
                 });
             });
-
+			// gets called periodically whenever the file upload progress changes.
             that.dz.on('uploadprogress', function(file, progress, byteSent) {
                 that.fire('uploadprogress', {
                     file: file,
@@ -164,14 +192,14 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                     byteSent: byteSent
                 });
             });
-
+			// the file has been uploaded successfully. gets the server response as second argument. (this event was called finished previously)
             that.dz.on('success', function(file, response) {
                 that.fire('success', {
                     file: file,
                     serverResponse: response
                 });
             });
-
+			// called when the upload was either successful or erroneous.
             that.dz.on('complete', function(file) {
                 that.fire('complete', {
                     file: file
@@ -182,114 +210,91 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                 	});
 			    }
             });
-
+			// called when a file upload gets canceled.
             that.dz.on('canceled', function(file) {
                 that.fire('canceled', {
                     file: file
                 });
             });
-
+			// called when the number of files accepted reaches the maxFiles limit.
             that.dz.on('maxfilesreached', function(file) {
                 that.fire('maxfilesreached', {
                     file: file
                 });
             });
-
+			// called for each file that has been rejected because the number of files exceeds the maxFiles limit.
             that.dz.on('maxfilesexceeded', function(file) {
                 that.fire('maxfilesexceeded', {
                     file: file
                 });
             });
- 
  			// drag events
             that.dz.on('drop', function(event) {
                 that.fire('drop');
             });
-            
-            that.dz.on('dragenter', function(event) {
-                that.fire('dragenter');
-            });
-            
-            that.dz.on('dragover', function(event) {
-                that.fire('dragover');
-            });
-    
-            that.dz.on('dragleave', function(event) {
-                that.fire('dragleave');
-            });
-            
+            // all files in the dropzone
             this.files = that.dz.files;
-            
-            this.getAcceptedFiles 	= function()
-	        {
+            // all accepted files
+            this.getAcceptedFiles 	= function() {
 	        	return that.dz.getAcceptedFiles();
 	        };
-            this.getRejectedFiles	= function()
-	        {
+	        // all rejected files
+            this.getRejectedFiles	= function() {
 	        	return that.dz.getRejectedFiles();
 	        };
-            this.getQueuedFiles		= function()
-	        {
+	        // all queued files
+            this.getQueuedFiles		= function() {
 	        	return that.dz.getQueuedFiles();
 	        };
-            this.getUploadingFiles	= function()
-	        {
+	        // all uploading files
+            this.getUploadingFiles	= function() {
 	        	return that.dz.getUploadingFiles();
 	        };
-            this.disable			= function()
-	        {
+	        // remove all event listeners on the element, and clear all file arrays
+            this.disable			= function() {
 	        	return that.dz.disable();
-	        };;
-	        this.enable				= function()
-	        {
+	        };
+	        // reenable dropzone after disabeling it
+	        this.enable				= function() {
 	        	return that.dz.enable();
 	        };
-	        this.addFile			= function(file)
-	        {
-	        	return that.dz.addFile(file);
-	        };
-	        this.enqueueFiles		= function(files)
-	        {
-	        	return that.dz.enqueueFiles(files);
-	        };;
-	        this.enqueueFile		= function(file)
-	        {
-	        	return dz.enqueueFile(file);
-	        };
-	        this.addDirectory		= function(entry, path)
-	        {
-	        	return that.dz.addDirectory(entry, path);
-	        };
-	        this.removeFile			= function(file)
-	        {
+//	        this.addFile			= function(file) {
+//	        	return that.dz.addFile(file);
+//	        };
+//	        this.enqueueFiles		= function(files) {
+//	        	return that.dz.enqueueFiles(files);
+//	        };
+//	        this.enqueueFile		= function(file) {
+//	        	return dz.enqueueFile(file);
+//	        };
+//	        this.addDirectory		= function(entry, path) {
+//	        	return that.dz.addDirectory(entry, path);
+//	        };
+	        // remove an added file from the dropzone
+	        this.removeFile			= function(file) {
 	        	return that.dz.removeFile(file);
 	        };
-	        this.removeAllFiles		= function(cancelIfNecessary)
-	        {
+	        // remove all files
+	        this.removeAllFiles		= function(cancelIfNecessary) {
 	        	return that.dz.removeAllFiles(cancelIfNecessary);
 	        };
-	        this.processQueue		= function()
-	        {
+	        // upload all files currently queued
+	        this.processQueue		= function() {
 	        	return that.dz.processQueue();
 	        };
-	        this.processFiles		= function(files)
-	        {
-	        	return that.dz.processFiles(files);
-	        };
-	        this.cancelUpload		= function(file)
-	        {
-	        	return that.dz.cancelUpload(file);
-	        };
-	        this.uploadFiles		= function(files){
-	        	return that.dz.uploadFiles(files);
-	        };
-        }
-        catch (e) {
+//	        this.processFiles		= function(files) {
+//	        	return that.dz.processFiles(files);
+//	        };
+//	        this.cancelUpload		= function(file) {
+//	        	return that.dz.cancelUpload(file);
+//	        };
+//	        this.uploadFiles		= function(files) {
+//	        	return that.dz.uploadFiles(files);
+//	        };
+        } catch (e) {
             console.log(e.message);
         }
     };
 
     return waDropzone;
 });
-
-// For more information, refer to http://doc.wakanda.org/Wakanda0.DevBranch/help/Title/en/page3871.html

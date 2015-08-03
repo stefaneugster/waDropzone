@@ -1,7 +1,7 @@
 (function(waDropzone) {
 
     /*Display name of the widget*/
-	waDropzone.setDescription('Dropzone');
+	waDropzone.setDescription('waDropzone');
 
     /*Default width and height of your widget when added to the Page*/
 	waDropzone.setWidth('500');
@@ -93,31 +93,6 @@
 		'description':'On Drop',
 		'category': 'Drag Events'
 	});
-	
-	waDropzone.addEvent({
-		'name':'dragenter',
-		'description':'On Drag Enter',
-		'category': 'Drag Events'
-	});
-
-	waDropzone.addEvent({
-		'name':'dragover',
-		'description':'On Drag Over',
-		'category': 'Drag Events'
-	});
-	
-	waDropzone.addEvent({
-		'name':'dragleave',
-		'description':'On Drag Leave',
-		'category': 'Drag Events'
-	});
-		
-    // Special events	
-	waDropzone.addEvent({
-		'name':'allfilescomplete',
-		'description':'On All Files Complete',
-		'category': 'Special Events'
-	});
 });
 
-// For more information, refer to http://doc.wakanda.org/Wakanda0.DevBranch/help/Title/en/page3870.html
+// For more information, refer to http://doc.wakanda.org/Wakanda/help/Title/en/page3870.html
