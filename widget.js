@@ -15,7 +15,7 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 	waDropzone.addProperty('maxFiles', {
 	    type : 'string',
 	    bindable : false,
-	    defaultValue : '10'
+	    defaultValue : '5'
 	});
 	waDropzone.addProperty('uploadFolder', {
 	    type : 'string',
@@ -76,7 +76,7 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                 uploadMultiple: this.uploadMultiple() == true ? true : false,
                 addRemoveLinks: this.addRemoveLinks() == true ? true : false,
                 createImageThumbnails: this.createImageThumbnails() == true ? true : false,
-                maxFiles: this.maxFiles() == null ? 2 : this.maxFiles(),
+                maxFiles: this.maxFiles() == null ? 5 : this.maxFiles(),
                 autoProcessQueue: this.autoProcess()
             });
             var conflict = this.ifFileExist();
@@ -118,8 +118,8 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                     }).done(function(data) {
                         var json = JSON.parse(data);
                         if (json.conflicts.length != 0) {
-
                             var box = $('<div class="waf-dialog-container" id="dz-modal">' + json.conflictMessage + '</div>');
+                            
                             box.dialog({
                                 autoOpen: false,
                                 title: 'Please select an option',
@@ -133,21 +133,13 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                                     click: function(ev) {
                                         r = false;
                                         that.processFile(file);
-                                        
                                         $(this).dialog('close');
                                     }
                                 },{
                                     'text': 'Replace',
                                     click: function(ev) {
                                         r = true;
-                                        
-//                                        var list = that.getAcceptedFiles();
-//                                       	 if(that.countElement(file) > 1)
-//                                        {
-//                                        	that.removeFile(file)
-//                                        }
                                         that.processFile(file);
-                                        
                                         $(this).dialog('close');
                                     }
                                 }]
@@ -257,18 +249,6 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 	        this.enable				= function() {
 	        	return that.dz.enable();
 	        };
-//	        this.addFile			= function(file) {
-//	        	return that.dz.addFile(file);
-//	        };
-//	        this.enqueueFiles		= function(files) {
-//	        	return that.dz.enqueueFiles(files);
-//	        };
-//	        this.enqueueFile		= function(file) {
-//	        	return dz.enqueueFile(file);
-//	        };
-//	        this.addDirectory		= function(entry, path) {
-//	        	return that.dz.addDirectory(entry, path);
-//	        };
 	        // remove an added file from the dropzone
 	        this.removeFile			= function(file) {
 	        	return that.dz.removeFile(file);
@@ -285,15 +265,6 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
 	        this.processFile		= function(file) {
 	        	return that.dz.processFile(file);
 	        };
-//	        this.processFiles		= function(files) {
-//	        	return that.dz.processFiles(files);
-//	        };
-//	        this.cancelUpload		= function(file) {
-//	        	return that.dz.cancelUpload(file);
-//	        };
-//	        this.uploadFiles		= function(files) {
-//	        	return that.dz.uploadFiles(files);
-//	        };
         } catch (e) {
             console.log(e.message);
         }
