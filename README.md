@@ -34,7 +34,6 @@ This __waDropzone__ widget has 11 Events:
 * __On Upload Progress__: Gets called periodically whenever the file upload progress changes.
 Gets the progress parameter as second parameter which is a percentage (0-100) and the bytesSent parameter as third which is the number of the bytes that have been sent to the server.
 * __On Sending__: Called just before each file is sent. Gets the xhr object and the formData objects as second and third parameters, so you can modify them (for example to add a CSRF token) or add additional data.
-* __On Processing__: When a file gets processed (since there is a queue not all files are processed immediately).
 * __On Success__: The file has been uploaded successfully. Gets the server response as second argument.
 * __On Complete__: Called when the upload was either successful or erroneous.
 * __On Cancel__: Called when a file upload gets canceled.
@@ -45,24 +44,14 @@ Gets the progress parameter as second parameter which is a percentage (0-100) an
 
 * __getAcceptedFiles__: List of files accepted.
 * __getRejectedFiles__: List of files rejected by the widget (due to size, file type etc).
-* __getRejectedFiles__: List of files rejected by the widget (due to size, file type etc).
 * __getQueuedFiles__: List of files in the Queue.
 * __getUploadingFiles__: List the files currently in the upload process.
 * __disable__: Disable the widget.
 * __enable__: Enable the widget.
-* __addFile(file)__: Add file to the widget, it accept one parameter File Object __file__ (http://www.w3.org/TR/FileAPI/#dfn-file).
-* __enqueueFiles(files)__: enqueue multiple files to the Queue, it accept an array of file objects. 
-* __enqueueFile(file)__: enqueue single file to the Queue, it accept an file object as parameter. 
 * __removeFile(file)__: remove file from the widget. 
 * __removeAllFiles(cancelIfNecessary)__: remove all files from the widget, pass a boolean to cancel the uploading files as well. 
-* __removeAllFiles(cancelIfNecessary)__: remove all files from the widget, pass a boolean to cancel the uploading files as well. 
 * __processQueue()__: start processing files in the Queue. 
-* __processFiles(files)__: process the specified files. 
-* __cancelUpload(file)__: cancel the upload for the specified file.
-* __uploadFiles(files)__: Start uploading the specified files.
-
-### Goals
-The __waDropzone__ is an alternative to upload multiple files to Wakanda Server, it's easy to use just Drag & Drop the widget to your page and you're up & running.
+* __processFile(file)__: process the specified file. 
 
 ### More Information
 For more information on how to install a custom widget, refer to [Installing a Custom Widget](http://doc.wakanda.org/WakandaStudio0/help/Title/en/page3869.html#1027761).
