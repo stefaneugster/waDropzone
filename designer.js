@@ -28,6 +28,12 @@
 	});
 	
 	waDropzone.addEvent({
+		'name':'acceptedfile',
+		'description':'After File Added',
+		'category': 'File Events'
+	});
+	
+	waDropzone.addEvent({
 		'name':'removedfile',
 		'description':'On File Removed',
 		'category': 'File Events'

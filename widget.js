@@ -83,11 +83,20 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                 createImageThumbnails: this.createImageThumbnails() == true ? true : false,
                 maxFiles: this.maxFiles() == null ? 5 : this.maxFiles(),
                 dictDefaultMessage: this.defaultMessage() == null ? 'Drop files here to upload' : this.defaultMessage(),
-                autoProcessQueue: this.autoProcess()
+                autoProcessQueue: this.autoProcess(),
+                accept: function(file, done) {
+                	// accept files
+                	done();
+                	// file accepted an added to queue
+                	that.fire('acceptedfile', {
+                		file: file
+                	});
+  				}
             });
             var conflict = this.ifFileExist();
             var r = false;
             var folder = this.uploadFolder() == null ? '/tmp' : this.uploadFolder();
+
             // called just before each file is sent. Gets the xhr object and the formData objects as second and third parameters,
             // so you can modify them (for example to add a CSRF token) or add additional data
             that.dz.on('sending', function(file, xhr, formData) {
@@ -157,6 +166,7 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
                         }
                     });
                 }
+                // fire addedfile event
                 that.fire('addedfile', {
                     file: file
                 });
@@ -275,6 +285,5 @@ WAF.define('waDropzone', ['waf-core/widget'], function(widget) {
             console.log(e.message);
         }
     };
-
     return waDropzone;
 });
